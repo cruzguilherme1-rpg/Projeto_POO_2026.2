@@ -1,3 +1,4 @@
+from datetime import datetime
 from models.Cliente import Cliente
 from models.ClienteDAO import ClienteDAO
 from models.vendas import Venda
@@ -31,8 +32,8 @@ class Service:
 #coisas das vendas
 
     @staticmethod
-    def inserir_venda(data, carrinho, total, id_cliente):
-        v = Venda(0, data, carrinho, total, id_cliente)
+    def inserir_venda(carrinho, total, id_cliente):
+        v = Venda(0, datetime.now(), carrinho, total, id_cliente)
         VendaDAO().inserir(v)
     
     @staticmethod
@@ -55,17 +56,19 @@ class Service:
 #coisas dos produtos
 
     @staticmethod
-    def inserir_produto(nome, preco, quantidade):
-        p = Produtos(0, nome, preco, quantidade)
-        ProdutoDAO().inserir(p)
+    def inserir_produto(nome, preco, quantidade, id_categoria):
+        dao = ProdutoDAO()
+        id_produto = max((p.get_id() for p in dao.listar()), default=0) + 1
+        p = Produtos(id_produto, nome, preco, quantidade, id_categoria)
+        dao.inserir(p)
 
     @staticmethod
     def listar_produtos():
         return ProdutoDAO().listar()
 
     @staticmethod
-    def atualizar_produto(id, nome, preco, quantidade):
-        p = Produtos(id, nome, preco, quantidade)
+    def atualizar_produto(id, nome, preco, quantidade, id_categoria):
+        p = Produtos(id, nome, preco, quantidade, id_categoria)
         ProdutoDAO().atualizar(p)
 
     @staticmethod
@@ -75,8 +78,8 @@ class Service:
 #coisas das categorias
 
     @staticmethod
-    def inserir_categoria(nome):
-        c = Categoria(0, nome)
+    def inserir_categoria(nome, descricao):
+        c = Categoria(nome, 1, descricao)
         CategoriaDAO().inserir(c)
 
     @staticmethod
@@ -84,8 +87,8 @@ class Service:
         return CategoriaDAO().listar()
 
     @staticmethod
-    def atualizar_categoria(id, nome):
-        c = Categoria(id, nome)
+    def atualizar_categoria(id, nome, descricao):
+        c = Categoria(nome, id, descricao)
         CategoriaDAO().atualizar(c)
 
     @staticmethod

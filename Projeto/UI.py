@@ -1,20 +1,10 @@
-from datetime import datetime
 from services import Service
-
-def parse_data(data_str):
-    formatos = ("%d/%m/%Y %H:%M:%S", "%d %m %Y %H %M %S")
-    for formato in formatos:
-        try:
-            return datetime.strptime(data_str, formato)
-        except ValueError:
-            continue
-    raise ValueError("Formato de data inválido. Use dd/mm/aaaa hh:mm:ss ou dd mm aaaa hh mm ss.")
 
 class UI:
     @staticmethod
     def main():
         op = 0 
-        while op != 19:
+        while op != 18:
             op = UI.menu()
             if op == 1: UI.inserir_cliente()
             if op == 2: UI.listar_clientes()
@@ -33,6 +23,7 @@ class UI:
             if op == 15: UI.listar_categorias()
             if op == 16: UI.atualizar_categoria()
             if op == 17: UI.excluir_categoria()
+            if op == 18: print("programa executado com sucesso")
     @staticmethod
     def menu():
         print("1 - Inserir Cliente, 2 - Listar Clientes, 3 - Atualizar Cliente, 4 - Excluir Cliente, 5 - Inserir Venda, 6 - Listar Vendas, 7 - Listar Vendas por ID, 8 - Atualizar Venda, 9 - Excluir Venda, 10 - Inserir Produto, 11 - Listar Produtos, 12 - Atualizar Produto, 13 - Excluir Produto, 14 - Inserir Categoria, 15 - Listar Categorias, 16 - Atualizar Categoria, 17 - Excluir Categoria, 18 - Sair")
@@ -68,15 +59,12 @@ class UI:
 
     @staticmethod
     def inserir_venda():
-        id = int(input("informe o id da venda: "))
-        data_str = input("informe a data (dd/mm/aaaa hh:mm:ss ou dd mm aaaa hh mm ss): ")
-        data = parse_data(data_str)
         carrinho = input("informe o carrinho (digite Sim ou Não): ")
         if carrinho == "Sim": carrinho = True
         if carrinho == "Não": carrinho = False
         total = input("calcular o total (digite Sim ou Não): ")
         id_cliente = int(input("informe o id do cliente: "))
-        Service.inserir_venda(id, data, carrinho, total, id_cliente)
+        Service.inserir_venda(carrinho, total, id_cliente)
 
     @staticmethod
     def listar_vendas():
@@ -96,14 +84,16 @@ class UI:
     def atualizar_venda():
         UI.listar_vendas()
         id = int(input("informe o id da venda: "))
-        data_str = input("informe a data (dd/mm/aaaa hh:mm:ss ou dd mm aaaa hh mm ss): ")
-        data = parse_data(data_str)
+        venda = Service.listar_vendas_por_id(id)
+        if venda is None:
+            print("Venda não encontrada")
+            return
         carrinho = input("informe o carrinho (digite Sim ou Não): ")
         if carrinho == "Sim": carrinho = True
         if carrinho == "Não": carrinho = False
         total = input("calcular o total (digite Sim ou Não): ")
         id_cliente = int(input("informe o id do cliente: "))
-        Service.atualizar_venda(id, data, carrinho, total, id_cliente)
+        Service.atualizar_venda(id, venda.get_data(), carrinho, total, id_cliente)
     
     @staticmethod
     def excluir_venda():
@@ -118,7 +108,8 @@ class UI:
         nome = input("informe o nome do produto: ")
         preco = float(input("informe o preço do produto: "))
         quantidade = int(input("informe a quantidade do produto: "))
-        Service.inserir_produto(nome, preco, quantidade)
+        id_categoria = int(input("informe o id da categoria: "))
+        Service.inserir_produto(nome, preco, quantidade, id_categoria)
 
     @staticmethod
     def listar_produtos():
@@ -132,7 +123,8 @@ class UI:
         nome = input("informe o nome do produto: ")
         preco = float(input("informe o preço do produto: "))
         quantidade = int(input("informe a quantidade do produto: "))
-        Service.atualizar_produto(id, nome, preco, quantidade)
+        id_categoria = int(input("informe o id da categoria: "))
+        Service.atualizar_produto(id, nome, preco, quantidade, id_categoria)
 
     @staticmethod
     def excluir_produto():
@@ -145,7 +137,8 @@ class UI:
     @staticmethod
     def inserir_categoria():
         nome = input("informe o nome da categoria: ")
-        Service.inserir_categoria(nome)
+        descricao = input("informe a descrição da categoria: ")
+        Service.inserir_categoria(nome, descricao)
 
     @staticmethod
     def listar_categorias():
@@ -156,8 +149,9 @@ class UI:
     def atualizar_categoria():
         UI.listar_categorias()
         id = int(input("informe o id da categoria: "))
-        nome = input("informe o nome da categoria: ")
-        Service.atualizar_categoria(id, nome)
+        nome = input("informe o novo nome da categoria: ")
+        descricao = input("informe a nova descrição da categoria: ")
+        Service.atualizar_categoria(id, nome, descricao)
 
     @staticmethod
     def excluir_categoria():

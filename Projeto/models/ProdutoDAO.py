@@ -1,10 +1,11 @@
 import json
-from Projeto.models.Produto import Produtos
+from models.Produto import Produtos
 
 class ProdutoDAO:
     def __init__(self):
         self.__arquivo = "PRODUTO.json"
         self.__objetos = []
+        self.carregar()
 
     def salvar(self):
         with open(self.__arquivo, "w") as f:

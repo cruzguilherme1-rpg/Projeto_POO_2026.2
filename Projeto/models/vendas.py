@@ -1,13 +1,13 @@
 from datetime import datetime
-from Projeto.models.vendaItem import VendaItem
+from models.vendaItem import VendaItem
 
 class Venda:
     def __init__(self, id, data, carrinho, total, id_cliente):
-        self.set_id = id
-        self.set_data = data
-        self.set_carrinho = carrinho
-        self.set_total = total
-        self.set_id_cliente = id_cliente
+        self.set_id(id)
+        self.set_data(data)
+        self.__carrinho = carrinho
+        self.__total = total
+        self.set_id_cliente(id_cliente)
 
     def __str__(self):
         return f"ID: {self.__id} - Data: {self.__data} - Carrinho: {self.__carrinho} - Total: {self.__total} - ID Cliente: {self.__id_cliente}"
@@ -19,10 +19,12 @@ class Venda:
 
     def set_data(self, data):
         if data is None:
-            self.data = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if data > datetime.now().strftime("%d/%m/%Y %H:%M:%S"):
+            data = datetime.now()
+        elif isinstance(data, str):
+            data = datetime.strptime(data, "%d/%m/%Y %H:%M:%S")
+        if data > datetime.now():
             raise ValueError("Data não pode ser futura")
-        self.__data = data
+        self.__data = data.strftime("%d/%m/%Y %H:%M:%S")
 
     def set_carrinho(self, carrinho):
         if carrinho == True: 
@@ -49,7 +51,7 @@ class Venda:
     def get_total(self): return self.__total
     def get_id_cliente(self): return self.__id_cliente
 
-    def from_json(self):
+    def to_json(self):
         Venda_pr = {}
         Venda_pr["id"] = self.__id
         Venda_pr["data"] = self.__data 
@@ -59,5 +61,11 @@ class Venda:
         return Venda_pr
 
     @staticmethod
-    def to_json(Venda_pr):
-        return Venda_pr(Venda_pr["id"], Venda_pr["data"], Venda_pr["carrinho"], Venda_pr["total"], Venda_pr["id_cliente"])
+    def from_json(Venda_pr):
+        return Venda(
+            Venda_pr["id"],
+            Venda_pr["data"],
+            Venda_pr["carrinho"],
+            Venda_pr["total"],
+            Venda_pr["id_cliente"],
+        )

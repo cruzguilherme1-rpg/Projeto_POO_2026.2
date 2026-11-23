@@ -1,5 +1,5 @@
 import json
-from Projeto.models.vendaItem import VendaItem
+from models.vendaItem import VendaItem
 
 class VendaItemDAO:
     def __init__(self):

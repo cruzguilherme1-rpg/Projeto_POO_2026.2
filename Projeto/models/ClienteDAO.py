@@ -1,5 +1,5 @@
 import json
-from Projeto.models.Cliente import Cliente
+from models.Cliente import Cliente
 
 class ClienteDAO:
     def __init__(self):
@@ -35,13 +35,14 @@ class ClienteDAO:
     
     def __abrir(self):
         self.__objetos = []
-        arquivo = open(self.__arquivo, mode="r")
-        objetos_json = json.load(arquivo)      
-        for obj in objetos_json:               
+        try:
+            with open(self.__arquivo, mode="r") as arquivo:
+                objetos_json = json.load(arquivo)
+        except FileNotFoundError:
+            return
+        for obj in objetos_json:
             self.__objetos.append(Cliente.from_json(obj))
-        arquivo.close()
     def __salvar(self):
-        arquivo = open(self.__arquivo, mode="w")
-        json.dump(self.__objetos, arquivo, default = Cliente.to_json, indent = 2)
-        arquivo.close()
+        with open(self.__arquivo, mode="w") as arquivo:
+            json.dump(self.__objetos, arquivo, default = Cliente.to_json, indent = 3)
         

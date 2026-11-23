@@ -1,5 +1,5 @@
 import json
-from Projeto.models.vendas import Venda
+from models.vendas import Venda
 
 class VendaDAO:
     def __init__(self):
@@ -34,12 +34,13 @@ class VendaDAO:
             self.__salvar()
     def __abrir(self):
         self.__objetos = []
-        arquivo = open(self.__arquivo, mode="r")
-        objetos_json = json.load(arquivo)      
-        for obj in objetos_json:               
-            self.__objetos.append(Venda.to_json(obj))
-        arquivo.close()
+        try:
+            with open(self.__arquivo, mode="r") as arquivo:
+                objetos_json = json.load(arquivo)
+        except FileNotFoundError:
+            return
+        for obj in objetos_json:
+            self.__objetos.append(Venda.from_json(obj))
     def __salvar(self):
-        arquivo = open(self.__arquivo, mode="w")
-        json.dump(self.__objetos, arquivo, default = Venda.from_json, indent = 2)
-        arquivo.close()
+        with open(self.__arquivo, mode="w") as arquivo:
+            json.dump(self.__objetos, arquivo, default = Venda.to_json, indent = 2)
