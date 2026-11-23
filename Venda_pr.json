@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "data": "23/11/2026 12:14:55",
+    "carrinho": true,
+    "total": "Sim",
+    "id_cliente": 1
+  },
+  {
+    "id": 2,
+    "data": "23/11/2026 12:22:33",
+    "carrinho": "sim",
+    "total": "sim",
+    "id_cliente": 1
+  }
+]
