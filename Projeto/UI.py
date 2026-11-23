@@ -14,7 +14,7 @@ class UI:
     @staticmethod
     def main():
         op = 0 
-        while op != 14:
+        while op != 19:
             op = UI.menu()
             if op == 1: UI.inserir_cliente()
             if op == 2: UI.listar_clientes()
@@ -29,9 +29,13 @@ class UI:
             if op == 11: UI.listar_produtos()
             if op == 12: UI.atualizar_produto()
             if op == 13: UI.excluir_produto()
+            if op == 14: UI.inserir_categoria()
+            if op == 15: UI.listar_categorias()
+            if op == 16: UI.atualizar_categoria()
+            if op == 17: UI.excluir_categoria()
     @staticmethod
     def menu():
-        print("1 - Inserir Cliente, 2 - Listar Clientes, 3 - Atualizar Cliente, 4 - Excluir Cliente, 5 - Inserir Venda, 6 - Listar Vendas, 7 - Listar Vendas por ID, 8 - Atualizar Venda, 9 - Excluir Venda, 10 - Inserir Produto, 11 - Listar Produtos, 12 - Atualizar Produto, 13 - Excluir Produto, 14 - Sair")
+        print("1 - Inserir Cliente, 2 - Listar Clientes, 3 - Atualizar Cliente, 4 - Excluir Cliente, 5 - Inserir Venda, 6 - Listar Vendas, 7 - Listar Vendas por ID, 8 - Atualizar Venda, 9 - Excluir Venda, 10 - Inserir Produto, 11 - Listar Produtos, 12 - Atualizar Produto, 13 - Excluir Produto, 14 - Inserir Categoria, 15 - Listar Categorias, 16 - Atualizar Categoria, 17 - Excluir Categoria, 18 - Sair")
         return int(input("Digite a opção: "))
 
 #cliente
