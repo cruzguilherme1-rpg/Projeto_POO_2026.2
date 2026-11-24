@@ -33,6 +33,8 @@ class ProdutoDAO:
                 break
         self.salvar()
 
-    def excluir(self, produtos):
-        self.__objetos.remove(produtos)
-        self.salvar()
+    def excluir(self, id):
+        produtos = self.listar(id)
+        if produtos != None:
+            self.__objetos.remove(produtos)
+            self.salvar()

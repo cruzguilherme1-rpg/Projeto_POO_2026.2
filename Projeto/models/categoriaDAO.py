@@ -33,7 +33,9 @@ class CategoriaDAO:
                 break
         self.salvar()
 
-    def excluir(self, categoria):
-        self.__objetos.remove(categoria)
-        self.salvar()   
+    def excluir(self, id):
+        aux = self.listar(id)
+        if aux != None:
+            self.__objetos.remove(aux)
+            self.salvar()   
 
