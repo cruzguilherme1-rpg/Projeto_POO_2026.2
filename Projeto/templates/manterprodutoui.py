@@ -14,9 +14,9 @@ class ManterProdutoUI:
 
     def inserir_produto():
         nome = st.text_input("Informe o nome: ")
-        preco = st.text_input("Informe o preço: ")
-        quantidade = st.text_input("Informe a quantidade: ")
-        id_categoria = st.text_input("Informe o ID da categoria do produto: ")
+        preco = st.number_input("Informe o preço: ", min_value=0.0, step=0.01, format="%.2f")
+        quantidade = st.number_input("Informe a quantidade: ", min_value=1, step=1)
+        id_categoria = st.number_input("Informe o ID da categoria do produto: ", min_value=1, step=1)
         if st.button("Inserir produto"):
             Service.inserir_produto(nome, preco, quantidade, id_categoria)
             st.success("produto inserido com sucesso!")
@@ -37,12 +37,12 @@ class ManterProdutoUI:
         if len(produtos) == 0: st.write("nenhum produto cadastrado.")
         else:
             op = st.selectbox("Selecione o produto para atualizar", produtos)
-            nome = st.text_input("Informe o nome: ", op.get_nome())
-            preco = st.text_input("Informe o e-mail: ", op.get_preco())
-            quantidade = st.text_input("Informe o quantidade: ", op.get_quantidade())
-            id_categoria = st.text_input("Informe o ID da categoria do produto: ", op.get_id_produto())
+            nome = st.text_input("Informe o nome: ", op.get_descricao())
+            preco = st.number_input("Informe o preço: ", min_value=0.0, value=float(op.get_preco()), step=0.01, format="%.2f")
+            quantidade = st.number_input("Informe a quantidade: ", min_value=1, value=int(op.get_estoque()), step=1)
+            id_categoria = st.number_input("Informe o ID da categoria do produto: ", min_value=1, value=int(op.get_id_categoria()), step=1)
             if st.button("Atualizar produto"):
-                Service.atualizar_produto(op.get_id(), nome, preco, quantidade)
+                Service.atualizar_produto(op.get_id(), nome, preco, quantidade, id_categoria)
                 st.success("produto atualizado com sucesso!")
                 time.sleep(2)
                 st.rerun()

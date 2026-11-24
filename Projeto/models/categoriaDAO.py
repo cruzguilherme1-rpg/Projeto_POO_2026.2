@@ -27,6 +27,7 @@ class CategoriaDAO:
         return self.__objetos
 
     def atualizar(self, categoria):
+        self.carregar()
         for i, c in enumerate(self.__objetos):
             if c.get_id() == categoria.get_id():
                 self.__objetos[i] = categoria
@@ -34,8 +35,9 @@ class CategoriaDAO:
         self.salvar()
 
     def excluir(self, id):
-        aux = self.listar(id)
-        if aux != None:
+        self.carregar()
+        aux = next((c for c in self.__objetos if c.get_id() == id), None)
+        if aux is not None:
             self.__objetos.remove(aux)
             self.salvar()   
 

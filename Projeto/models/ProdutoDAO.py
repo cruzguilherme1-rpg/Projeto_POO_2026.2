@@ -34,7 +34,7 @@ class ProdutoDAO:
         self.salvar()
 
     def excluir(self, id):
-        produtos = self.listar(id)
-        if produtos != None:
-            self.__objetos.remove(produtos)
+        produto = next((p for p in self.__objetos if p.get_id() == id), None)
+        if produto is not None:
+            self.__objetos.remove(produto)
             self.salvar()
