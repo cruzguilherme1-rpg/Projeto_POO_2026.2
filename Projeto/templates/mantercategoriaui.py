@@ -36,10 +36,9 @@ class ManterCategoriaUI:
         else:
             op = st.selectbox("Selecione o categoria para atualizar", categorias)
             nome = st.text_input("Informe o nome: ", op.get_nome())
-            id = st.text_input("Informe o id da categoria: ", op.get_id())
             descricao = st.text_input("Informe a descrição: ", op.get_descricao())
             if st.button("Atualizar categoria"):
-                Service.atualizar_categoria(op.get_id(), nome, id, descricao)
+                Service.atualizar_categoria(op.get_id(), nome, descricao)
                 st.success("categoria atualizado com sucesso!")
                 time.sleep(2)
                 st.rerun()
