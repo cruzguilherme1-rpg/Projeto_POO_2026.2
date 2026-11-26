@@ -16,8 +16,9 @@ class ManterClienteUI:
         nome = st.text_input("Informe o nome: ")
         email = st.text_input("Informe o e-mail: ")
         fone = st.text_input("Informe o fone: ")
+        senha = st.text_input("Informe a senha: ", type="password")
         if st.button("Inserir Cliente"):
-            Service.inserir_cliente(nome, email, fone)
+            Service.inserir_cliente(nome, email, fone, senha)
             st.success("Cliente inserido com sucesso!")
             time.sleep(2)
             st.rerun()
@@ -39,6 +40,7 @@ class ManterClienteUI:
             nome = st.text_input("Informe o nome: ", op.get_nome())
             email = st.text_input("Informe o e-mail: ", op.get_email())
             fone = st.text_input("Informe o fone: ", op.get_fone())
+            senha = st.text_input("Nova senha: ", op.get_senha(), type="password")
             if st.button("Atualizar Cliente"):
                 Service.atualizar_cliente(op.get_id(), nome, email, fone)
                 st.success("Cliente atualizado com sucesso!")

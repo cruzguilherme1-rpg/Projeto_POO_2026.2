@@ -94,3 +94,20 @@ class Service:
     @staticmethod
     def excluir_categoria(id):
         CategoriaDAO().excluir(id)
+
+#Adm/Usuario
+
+    @staticmethod
+    def cliente_criar_admin():
+        for c in Service.listar_clientes():
+            if c.get_email() == "admin": return
+        Service.cliente_inserir("admin", "admin", "fone", "1234")
+
+    @staticmethod
+    def cliente_autenticar(email, senha):
+        for c in Service.listar_clientes():
+            if c.get_email() == email and c.get_senha() == senha:
+                return {"id": c.get_id(), "nome": c.get_nome()}
+        return None
+
+    
